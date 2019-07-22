@@ -19,5 +19,15 @@ namespace Com.Danliris.Sales.Test.AutoMapper
             var viewModel = mapper.Map<DefaultViewModel>(new DefaultModel());
             Assert.NotNull(viewModel);
         }
+
+        [Fact]
+        public void CostCalculationGarmentMappers_ViewModel_To_Model()
+        {
+            var config = new MapperConfiguration(c => c.AddProfile<DefaultMapper>());
+            var mapper = config.CreateMapper();
+
+            var model = mapper.Map<DefaultModel>(new DefaultViewModel());
+            Assert.NotNull(model);
+        }
     }
 }
