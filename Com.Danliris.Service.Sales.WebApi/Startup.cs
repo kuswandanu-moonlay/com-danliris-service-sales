@@ -68,6 +68,7 @@ using Com.Danliris.Service.Sales.Lib.BusinessLogic.Logic.SalesInvoice;
 using Com.Danliris.Service.Sales.Lib.BusinessLogic.Logic.FinishingPrintingCostCalculation;
 using Com.Danliris.Service.Sales.Lib.BusinessLogic.Interface.FinishingPrintingCostCalculation;
 using Com.Danliris.Service.Sales.Lib.BusinessLogic.Facades.FinishingPrintingCostCalculation;
+using Com.Danliris.Service.Sales.Lib.Models.LocalMerchandiserModels;
 
 namespace Com.Danliris.Service.Sales.WebApi
 {
@@ -227,6 +228,7 @@ namespace Com.Danliris.Service.Sales.WebApi
             Com.Danliris.Service.Sales.Lib.Helpers.APIEndpoint.ConnectionString = connectionString;
             /* Register */
             services.AddDbContext<SalesDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<LocalMerchandiserDbContext>(options => options.UseSqlServer("Server=tcp:175.106.17.18,5671;Initial Catalog=Merchandiser;Persist Security Info=False;User ID=sa;Password=AdminDL-dev-123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"));
             RegisterFacades(services);
             RegisterLogic(services);
             RegisterServices(services);

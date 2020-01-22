@@ -6,25 +6,11 @@ namespace Com.Danliris.Service.Sales.Lib.Models.LocalMerchandiserModels
 {
     public partial class LocalMerchandiserDbContext : DbContext
     {
-        public LocalMerchandiserDbContext()
-        {
-        }
-
-        public LocalMerchandiserDbContext(DbContextOptions<LocalMerchandiserDbContext> options)
-            : base(options)
+        public LocalMerchandiserDbContext(DbContextOptions<LocalMerchandiserDbContext> options) : base(options)
         {
         }
 
         public virtual DbSet<Horder> Horder { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=tcp:175.106.17.18,5671;Initial Catalog=Merchandiser;Persist Security Info=False;User ID=sa;Password=AdminDL-dev-123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

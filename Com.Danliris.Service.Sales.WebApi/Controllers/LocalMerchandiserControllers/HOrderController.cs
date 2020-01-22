@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Sales.WebApi.Utilities;
+﻿using Com.Danliris.Service.Sales.Lib.Models.LocalMerchandiserModels;
+using Com.Danliris.Service.Sales.WebApi.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,37 +17,22 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers.LocalMerchandiserControl
     public class HOrderController : Controller
     {
         private readonly static string apiVersion = "1.0";
+        private readonly LocalMerchandiserDbContext dbContext;
 
-        public HOrderController()
+        public HOrderController(LocalMerchandiserDbContext dbContext)
         {
+            this.dbContext = dbContext;
         }
 
         [HttpGet]
-        public IActionResult Read(string no = null)
+        public IActionResult Read(string no = null) // 1911790
         {
             try
             {
-                string connectionString = "Server=tcp:175.106.17.18,5671;Initial Catalog=Merchandiser;Persist Security Info=False;User ID=sa;Password=AdminDL-dev-123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
-                List<string> data = new List<string>();
-
-                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                {
-                    sqlConnection.Open();
-                    string query = $"select Kode from HOrder where No='{no}'";
-
-                    using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
-                    {
-                        using (SqlDataReader reader = sqlCommand.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                data.Add(reader.GetString(0));
-                            }
-
-                            return Ok(data);
-                        }
-                    }
-                }
+                var query = dbContext.Horder;
+                var data = query.Where(w => w.No == no)
+                    .Select(s => s.Kode);
+                return Ok(data);
             }
             catch (Exception e)
             {
