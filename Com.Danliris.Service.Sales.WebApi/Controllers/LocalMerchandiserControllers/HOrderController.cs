@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Sales.Lib.Models.LocalMerchandiserModels;
+﻿using Com.Danliris.Service.Sales.Lib;
 using Com.Danliris.Service.Sales.WebApi.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,21 +17,24 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers.LocalMerchandiserControl
     public class HOrderController : Controller
     {
         private readonly static string apiVersion = "1.0";
-        private readonly LocalMerchandiserDbContext dbContext;
+        private readonly ILocalMerchandiserDbContext dbContext;
 
-        public HOrderController(LocalMerchandiserDbContext dbContext)
+        public HOrderController(ILocalMerchandiserDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        [HttpGet]
-        public IActionResult Read(string no = null) // 1911790
+        [HttpGet("kode-by-no")]
+        public IActionResult Read(string no = null)
         {
             try
             {
-                var query = dbContext.Horder;
-                var data = query.Where(w => w.No == no)
-                    .Select(s => s.Kode);
+                var reader = dbContext.ExecuteReader($"select Kode from HOrder where No='{no}'", null);
+                List<string> data = new List<string>();
+                while (reader.Read())
+                {
+                    data.Add(reader.GetString(0));
+                }
                 return Ok(data);
             }
             catch (Exception e)
